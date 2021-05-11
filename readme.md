@@ -5,3 +5,5 @@
 # npx tsconfig.json
 
 # scripts => watch
+
+# mikro-orm => easy-to-use PostgreSQL
