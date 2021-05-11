@@ -11,10 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@mikro-orm/core");
 const constants_1 = require("./constants");
+const Post_1 = require("./entities/Post");
 const db = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orm = yield core_1.MikroORM.init({
-            entities: [],
+            entities: [Post_1.Post],
             dbName: 'postgres',
             user: 'postgres',
             password: 'user',
