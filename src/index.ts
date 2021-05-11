@@ -12,6 +12,9 @@ const db = async () => {
       type: 'postgresql',
       debug: !__prod__
     }) 
+
+    const post = orm.em.create(Post, {title: 'Testing my DB connection'})
+    await orm.em.persistAndFlush(post)
   } 
   catch (err) {
     console.log(err.message)  

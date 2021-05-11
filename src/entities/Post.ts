@@ -14,3 +14,4 @@ export class Post {
   @Property()
   title!: string;
 }
+

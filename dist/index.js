@@ -22,6 +22,8 @@ const db = () => __awaiter(void 0, void 0, void 0, function* () {
             type: 'postgresql',
             debug: !constants_1.__prod__
         });
+        const post = orm.em.create(Post_1.Post, { title: 'Testing my DB connection' });
+        yield orm.em.persistAndFlush(post);
     }
     catch (err) {
         console.log(err.message);
