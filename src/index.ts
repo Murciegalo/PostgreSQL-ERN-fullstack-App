@@ -8,8 +8,11 @@ const db = async () => {
     const orm = await MikroORM.init(mikroOrmConfig) 
     // Migrations automated
     await orm.getMigrator().up()
-    const post = orm.em.create(Post, {title: 'Testing my DB connection'})
-    await orm.em.persistAndFlush(post)
+    // Save 1 post (TESTING PURPOSES)
+    // const post = orm.em.create(Post, {title: 'Testing my DB connection'})
+    // await orm.em.persistAndFlush(post)
+    const posts = await orm.em.find(Post, {})
+    console.log('ALL POSTS IN DB', posts)
   } 
   catch (err) {
     console.log(err.message)  
