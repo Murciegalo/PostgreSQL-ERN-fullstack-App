@@ -5,6 +5,7 @@ import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 import { HelloResolver } from './resolvers/hello'
+import { PostResolver } from './resolvers/Post'
 
 const main = async () => {
   try {
@@ -15,9 +16,10 @@ const main = async () => {
     
     const apolloServer = new ApolloServer({
       schema: await buildSchema({
-        resolvers: [HelloResolver],
+        resolvers: [HelloResolver, PostResolver],
         validate: false
-      })
+      }),
+      context: () => ({em: orm.em})
     })
 
     apolloServer.applyMiddleware({app})
