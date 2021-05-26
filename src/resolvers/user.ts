@@ -57,7 +57,20 @@ export class UserResolver{
           username: userInputs.username, 
           password: hashedP
         })
-        await em.persistAndFlush(user)
+        try {
+          await em.persistAndFlush(user)
+        } 
+        catch (err) {
+          // duplicate username
+          if(err.code === '23505'){
+            return {
+              errors: [{
+                field: 'username',
+                msg: 'Username already taken'
+              }]
+            }
+          }
+        }
         return {
           user
         }

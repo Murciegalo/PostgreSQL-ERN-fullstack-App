@@ -91,7 +91,19 @@ let UserResolver = class UserResolver {
                 username: userInputs.username,
                 password: hashedP
             });
-            yield em.persistAndFlush(user);
+            try {
+                yield em.persistAndFlush(user);
+            }
+            catch (err) {
+                if (err.code === '23505') {
+                    return {
+                        errors: [{
+                                field: 'username',
+                                msg: 'Username already taken'
+                            }]
+                    };
+                }
+            }
             return {
                 user
             };
