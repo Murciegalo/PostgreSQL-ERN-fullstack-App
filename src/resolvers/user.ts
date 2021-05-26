@@ -31,18 +31,36 @@ class LoginResponse {
 
 @Resolver()
 export class UserResolver{
-  @Mutation(() => User)
+  @Mutation(() => LoginResponse)
     async register(
       @Ctx() {em}: MyContext,
       @Arg('userInputs') userInputs: UserSignUp
-      ){
+      ): Promise<LoginResponse> {
+        if( userInputs.username.length <= 2){
+          return {
+            errors: [{
+              field: `username`,
+              msg: `Please set a longer username`
+            }]
+          }
+        }
+        if( userInputs.password.length <= 5){
+          return {
+            errors: [{
+              field: `password`,
+              msg: `Please set at least a 6 chars password`
+            }]
+          }
+        }
         const hashedP = await argon2.hash(userInputs.password)
         const user = em.create(User, {
           username: userInputs.username, 
           password: hashedP
         })
         await em.persistAndFlush(user)
-        return user
+        return {
+          user
+        }
   }
 
   @Mutation(() => LoginResponse)
