@@ -41,6 +41,32 @@ __decorate([
 UserSignUp = __decorate([
     type_graphql_1.InputType()
 ], UserSignUp);
+let FieldError = class FieldError {
+};
+__decorate([
+    type_graphql_1.Field(),
+    __metadata("design:type", String)
+], FieldError.prototype, "field", void 0);
+__decorate([
+    type_graphql_1.Field(),
+    __metadata("design:type", String)
+], FieldError.prototype, "msg", void 0);
+FieldError = __decorate([
+    type_graphql_1.ObjectType()
+], FieldError);
+let LoginResponse = class LoginResponse {
+};
+__decorate([
+    type_graphql_1.Field(() => [FieldError], { nullable: true }),
+    __metadata("design:type", Array)
+], LoginResponse.prototype, "errors", void 0);
+__decorate([
+    type_graphql_1.Field(() => User_1.User, { nullable: true }),
+    __metadata("design:type", User_1.User)
+], LoginResponse.prototype, "user", void 0);
+LoginResponse = __decorate([
+    type_graphql_1.ObjectType()
+], LoginResponse);
 let UserResolver = class UserResolver {
     register({ em }, userInputs) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -53,6 +79,33 @@ let UserResolver = class UserResolver {
             return user;
         });
     }
+    login({ em }, userInputs) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield em.findOne(User_1.User, {
+                username: userInputs.username
+            });
+            if (!user) {
+                return {
+                    errors: [{
+                            field: 'username',
+                            msg: `Username doesn't exist`
+                        }]
+                };
+            }
+            const valid = yield argon2_1.default.verify(user.password, userInputs.password);
+            if (!valid) {
+                return {
+                    errors: [{
+                            field: 'password',
+                            msg: `Incorrect password`
+                        }]
+                };
+            }
+            return {
+                user
+            };
+        });
+    }
 };
 __decorate([
     type_graphql_1.Mutation(() => User_1.User),
@@ -62,6 +115,14 @@ __decorate([
     __metadata("design:paramtypes", [Object, UserSignUp]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "register", null);
+__decorate([
+    type_graphql_1.Mutation(() => LoginResponse),
+    __param(0, type_graphql_1.Ctx()),
+    __param(1, type_graphql_1.Arg('userInputs')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, UserSignUp]),
+    __metadata("design:returntype", Promise)
+], UserResolver.prototype, "login", null);
 UserResolver = __decorate([
     type_graphql_1.Resolver()
 ], UserResolver);
