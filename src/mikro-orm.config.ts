@@ -2,6 +2,7 @@ import { MikroORM } from "@mikro-orm/core";
 import { __prod__ } from "./constants";
 import { Post } from "./entities/Post";
 import path from 'path'
+import { User } from "./entities/User";
 
 
 export default {
@@ -9,7 +10,7 @@ export default {
     path: path.join(__dirname, './migrations'), // process.cwd() | path to folder with migration files
     pattern: /^[\w-]+\d+\.[tj]s$/, // how to match migration files
   },
-  entities:[Post],
+  entities:[Post, User],
   dbName: 'postgres',
   user: 'postgres',
   password: 'user',
