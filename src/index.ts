@@ -10,6 +10,7 @@ import { UserResolver } from './resolvers/user'
 import redis from 'redis'
 import session from 'express-session'
 import connectRedis from 'connect-redis'
+import { MyContext } from './types'
 
 const main = async () => {
   try {
@@ -23,9 +24,18 @@ const main = async () => {
     app.use(
       session({
         name: 'Auth-',
-        store: new RedisStore({ client: redisClient }),
+        store: new RedisStore({ 
+          client: redisClient,
+          disableTouch: true 
+        }),
+        cookie: {
+          maxAge: 1000 * 60 * 60,
+          httpOnly: true, // h c
+          sameSite: 'lax',
+          secure: __prod__ // c only works in https
+        },
         saveUninitialized: false,
-        secret: 'keyboard cat',
+        secret: 'adfasdfasfasdfasfasdfasdfsdf',
         resave: false,
       })
     )
@@ -35,7 +45,7 @@ const main = async () => {
         resolvers: [HelloResolver, PostResolver, UserResolver],
         validate: false
       }),
-      context: () => ({em: orm.em})
+      context: ({ req, res }): MyContext => ({em: orm.em, req, res})
     })
 
     apolloServer.applyMiddleware({app})

@@ -106,4 +106,4 @@ PostResolver = __decorate([
     type_graphql_1.Resolver()
 ], PostResolver);
 exports.PostResolver = PostResolver;
-//# sourceMappingURL=Post.js.map
+//# sourceMappingURL=post.js.map
