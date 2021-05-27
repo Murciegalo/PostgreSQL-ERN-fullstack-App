@@ -109,7 +109,7 @@ let UserResolver = class UserResolver {
             };
         });
     }
-    login({ em }, userInputs) {
+    login({ em, req }, userInputs) {
         return __awaiter(this, void 0, void 0, function* () {
             const user = yield em.findOne(User_1.User, {
                 username: userInputs.username
@@ -131,6 +131,7 @@ let UserResolver = class UserResolver {
                         }]
                 };
             }
+            req.session.userId = user.id;
             return {
                 user
             };

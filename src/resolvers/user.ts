@@ -3,6 +3,11 @@ import { User } from '../entities/User'
 import {MyContext} from '../types'
 import argon2 from 'argon2'
 
+declare module 'express-session' {
+  export interface SessionData {
+    userId: any
+  }
+}
 
 @InputType()
 class UserSignUp {
@@ -78,7 +83,7 @@ export class UserResolver{
 
   @Mutation(() => LoginResponse)
     async login(
-      @Ctx() {em}: MyContext,
+      @Ctx() {em, req}: MyContext,
       @Arg('userInputs') userInputs: UserSignUp
       ): Promise<LoginResponse> 
       {
@@ -102,6 +107,9 @@ export class UserResolver{
             }]
           }
         }
+        //cookies
+        req.session!.userId = user.id 
+
         return {
           user
         }
