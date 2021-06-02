@@ -11,10 +11,10 @@ interface registerProps {
 }
 const REGISTER_MUT = `
   mutation Register($username:String!, $password:String!){
-    register(options: {username: $username, password: $password}){
+    register(userInputs: {username: $username, password: $password}){
       errors {
         field
-        message
+        msg
       }
       user {
         id
