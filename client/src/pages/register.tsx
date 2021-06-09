@@ -30,7 +30,9 @@ const Register: React.FC<registerProps> = ({}) => {
     <Container responsv='small'>
       <Formik
         initialValues={{username: '', password:''}}
-        onSubmit={(values) => register(values)}
+        onSubmit={async values => {
+          const res = await register(values)
+        }}
       >
         {({isSubmitting}) => (
           <Form>
