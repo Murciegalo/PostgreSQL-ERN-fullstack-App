@@ -4,12 +4,9 @@ import theme from '../theme'
 
 const client = createClient({
   url: 'http://localhost:4000/graphql',
-  // fetchOptions: () => {
-  //   // const token = getToken();
-  //   return {
-  //     headers: { authorization: token ? `Bearer ${token}` : '' },
-  //   };
-  // },
+  fetchOptions: {
+    credentials: 'include'
+  }
 });
 
 function MyApp({ Component, pageProps }) {
